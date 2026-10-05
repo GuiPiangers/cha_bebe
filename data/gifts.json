@@ -1,0 +1,14 @@
+{
+  "title": "Chá de bebê da Sophie",
+  "description": "Que alegria ter você com a gente! Escolha abaixo o que pretende presentear. A lista no fim da página mostra o que os outros convidados já escolheram.",
+  "items": [
+    { "id": "fralda-rn", "name": "Fralda RN", "desiredQuantity": 4 },
+    { "id": "fralda-p", "name": "Fralda P", "desiredQuantity": 10 },
+    { "id": "fralda-m", "name": "Fralda M", "desiredQuantity": 12 },
+    { "id": "fralda-g", "name": "Fralda G", "desiredQuantity": 8 },
+    { "id": "lenco-umedecido", "name": "Lenço umedecido", "desiredQuantity": 15 },
+    { "id": "pomada-assaduras", "name": "Pomada para assaduras", "desiredQuantity": 5 },
+    { "id": "body-rn", "name": "Body RN", "desiredQuantity": 6 },
+    { "id": "manta", "name": "Manta", "desiredQuantity": 3 }
+  ]
+}
