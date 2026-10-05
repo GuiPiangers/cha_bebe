@@ -15,6 +15,7 @@ const els = {
   loadError: $("#load-error"),
   form: $("#gift-form"),
   guestName: $("#guest-name"),
+  attendingInputs: document.querySelectorAll("input[name=attending]"),
   suggestions: $("#suggestions"),
   suggestionsEmpty: $("#suggestions-empty"),
   customItems: $("#custom-items"),
@@ -156,6 +157,13 @@ function collectForm() {
     valid = false;
   }
 
+  const attendingChoice = [...els.attendingInputs].find((input) => input.checked);
+  if (!attendingChoice) {
+    showError("attending", "Esta pergunta é obrigatória");
+    valid = false;
+  }
+  const attending = attendingChoice?.value === "true";
+
   for (const li of els.suggestions.querySelectorAll(".option")) {
     if (!li.querySelector(".option__check").checked) continue;
     const qtyInput = li.querySelector(".text-input--qty");
@@ -196,11 +204,7 @@ function collectForm() {
     );
     return null;
   }
-  if (items.length === 0) {
-    showError("form", "Escolha pelo menos um presente da lista ou adicione outro item.");
-    return null;
-  }
-  return { guestName, items };
+  return { guestName, attending, items };
 }
 
 async function handleSubmit(event) {

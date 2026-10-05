@@ -5,6 +5,7 @@
 // Contribution = {
 //   id: string,
 //   guestName: string,
+//   attending: boolean,
 //   createdAt: string (ISO),
 //   items: Array<{ itemId: string | null, name: string, quantity: number }>
 // }

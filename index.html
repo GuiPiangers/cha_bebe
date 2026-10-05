@@ -28,6 +28,19 @@
         <p class="field-error" data-error-for="guest-name" hidden></p>
       </section>
 
+      <fieldset class="card choice-group">
+        <legend class="question">Poderá participar? <span class="required">*</span></legend>
+        <label class="choice">
+          <input type="radio" name="attending" value="true" class="choice__input">
+          Sim, poderei
+        </label>
+        <label class="choice">
+          <input type="radio" name="attending" value="false" class="choice__input">
+          Não poderei participar
+        </label>
+        <p class="field-error" data-error-for="attending" hidden></p>
+      </fieldset>
+
       <section class="card">
         <h2 class="question">O que você pretende dar?</h2>
         <p class="question__help">Marque os itens e informe a quantidade.</p>
@@ -53,7 +66,7 @@
 
     <section id="success" class="card" hidden>
       <h2 class="question">Obrigado! 💜</h2>
-      <p>Sua escolha foi registrada. Confira abaixo a lista atualizada.</p>
+      <p>Sua resposta foi registrada. Confira abaixo a lista atualizada.</p>
       <button id="new-response" type="button" class="btn btn--text">Enviar outra resposta</button>
     </section>
 

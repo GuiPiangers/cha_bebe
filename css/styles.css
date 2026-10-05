@@ -104,6 +104,28 @@ body {
 .field-error { margin: 8px 0 0; color: var(--required); font-size: 12px; }
 .field-error--form { margin: 12px 0; font-size: 14px; }
 
+/* Seleção única */
+.choice-group { min-width: 0; }
+.choice-group .question { float: left; width: 100%; }
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+  clear: left;
+}
+
+.choice__input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
 /* Categorias (usadas nas sugestões e na lista de escolhidos) */
 .category-list, .category__items, .custom-list { list-style: none; margin: 0; padding: 0; }
 
