@@ -1,14 +1,85 @@
 {
   "title": "Chá de bebê da Sophie",
   "description": "Que alegria ter você com a gente! Escolha abaixo o que pretende presentear. A lista no fim da página mostra o que os outros convidados já escolheram.",
-  "items": [
-    { "id": "fralda-rn", "name": "Fralda RN", "desiredQuantity": 4 },
-    { "id": "fralda-p", "name": "Fralda P", "desiredQuantity": 10 },
-    { "id": "fralda-m", "name": "Fralda M", "desiredQuantity": 12 },
-    { "id": "fralda-g", "name": "Fralda G", "desiredQuantity": 8 },
-    { "id": "lenco-umedecido", "name": "Lenço umedecido", "desiredQuantity": 15 },
-    { "id": "pomada-assaduras", "name": "Pomada para assaduras", "desiredQuantity": 5 },
-    { "id": "body-rn", "name": "Body RN", "desiredQuantity": 6 },
-    { "id": "manta", "name": "Manta", "desiredQuantity": 3 }
+  "categories": [
+    {
+      "id": "roupinhas",
+      "name": "Roupinhas",
+      "icon": "👕",
+      "items": [
+        { "id": "body-curta-p", "name": "Body manga curta P", "desiredQuantity": 6 },
+        { "id": "body-curta-m", "name": "Body manga curta M", "desiredQuantity": 6 },
+        { "id": "body-curta-g", "name": "Body manga curta G", "desiredQuantity": 4 },
+        { "id": "body-longa-p", "name": "Body manga longa P", "desiredQuantity": 6 },
+        { "id": "body-longa-m", "name": "Body manga longa M", "desiredQuantity": 6 },
+        { "id": "body-longa-g", "name": "Body manga longa G", "desiredQuantity": 4 },
+        { "id": "tip-top-p", "name": "Tip top P", "desiredQuantity": 5 },
+        { "id": "tip-top-m", "name": "Tip top M", "desiredQuantity": 5 },
+        { "id": "tip-top-g", "name": "Tip top G", "desiredQuantity": 4 },
+        { "id": "calca-p", "name": "Calça/mijão P", "desiredQuantity": 5 },
+        { "id": "calca-m", "name": "Calça/mijão M", "desiredQuantity": 5 },
+        { "id": "calca-g", "name": "Calça/mijão G", "desiredQuantity": 4 },
+        { "id": "meias", "name": "Meias", "desiredQuantity": 8, "unit": "pares" },
+        { "id": "touca-luvinha", "name": "Touca e luvinha", "desiredQuantity": 3, "unit": "kits" }
+      ]
+    },
+    {
+      "id": "enxoval",
+      "name": "Enxoval",
+      "icon": "🛏️",
+      "items": [
+        { "id": "toalha-capuz", "name": "Toalha com capuz", "desiredQuantity": 3 },
+        { "id": "toalha-fralda", "name": "Toalha fralda", "desiredQuantity": 6 },
+        { "id": "manta-cobertor", "name": "Manta/cobertor", "desiredQuantity": 3 },
+        { "id": "paninho-boca", "name": "Paninho de boca", "desiredQuantity": 10 },
+        { "id": "lencol-berco", "name": "Lençol/fronha para berço", "desiredQuantity": 3, "unit": "jogos" },
+        { "id": "kit-berco", "name": "Kit berço", "desiredQuantity": 1 },
+        { "id": "ninho", "name": "Ninho", "desiredQuantity": 1 }
+      ]
+    },
+    {
+      "id": "higiene",
+      "name": "Higiene e cuidados",
+      "icon": "🫧",
+      "items": [
+        { "id": "lenco-umedecido", "name": "Lenço umedecido", "desiredQuantity": 15, "unit": "pacotes" },
+        { "id": "pomada-assaduras", "name": "Pomada antiassaduras", "desiredQuantity": 4 },
+        { "id": "algodao", "name": "Algodão", "desiredQuantity": 4, "unit": "pacotes" },
+        { "id": "sabonete-barra", "name": "Sabonete em barra", "desiredQuantity": 4 },
+        { "id": "sabonete-liquido", "name": "Sabonete líquido", "desiredQuantity": 3 },
+        { "id": "shampoo-condicionador", "name": "Shampoo/condicionador", "desiredQuantity": 2 },
+        { "id": "aspirador-nasal", "name": "Aspirador nasal", "desiredQuantity": 1 },
+        { "id": "kit-unhas", "name": "Kit higiene de unhas", "desiredQuantity": 1 },
+        { "id": "escova-cabelo", "name": "Escova de cabelo", "desiredQuantity": 1 },
+        { "id": "termometro", "name": "Termômetro clínico", "desiredQuantity": 1 },
+        { "id": "trocador", "name": "Trocador", "desiredQuantity": 1 },
+        { "id": "mamadeira-anticolica", "name": "Mamadeira anticólica", "desiredQuantity": 3 },
+        { "id": "prendedor-chupeta", "name": "Prendedor de chupeta", "desiredQuantity": 3 },
+        { "id": "oleo", "name": "Óleo", "desiredQuantity": 2 },
+        { "id": "kit-mamae-bebe", "name": "Kit mamãe e bebê", "desiredQuantity": 1 }
+      ]
+    },
+    {
+      "id": "brinquedos",
+      "name": "Brinquedos e estímulo",
+      "icon": "🧸",
+      "items": [
+        { "id": "mordedor", "name": "Mordedor", "desiredQuantity": 3 },
+        { "id": "chocalho", "name": "Chocalho", "desiredQuantity": 3 },
+        { "id": "tapete-atividade", "name": "Tapete de atividade", "desiredQuantity": 1 }
+      ]
+    },
+    {
+      "id": "fraldas",
+      "name": "Fraldas",
+      "icon": "🧷",
+      "note": "Marcas recomendadas: Baby Sec, Pampers, Huggies, Turma da Mônica, Pompom, Milli, Cremer e Personal.",
+      "items": [
+        { "id": "fralda-rn", "name": "Fralda RN", "desiredQuantity": 3, "unit": "pacotes" },
+        { "id": "fralda-p", "name": "Fralda P", "desiredQuantity": 8, "unit": "pacotes" },
+        { "id": "fralda-m", "name": "Fralda M", "desiredQuantity": 12, "unit": "pacotes" },
+        { "id": "fralda-g", "name": "Fralda G", "desiredQuantity": 10, "unit": "pacotes" }
+      ]
+    }
   ]
 }

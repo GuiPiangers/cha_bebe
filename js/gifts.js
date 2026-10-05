@@ -10,6 +10,16 @@ export function normalizeName(name) {
     .trim();
 }
 
+// Categoria virtual para itens adicionados pelos convidados.
+export const OTHER_CATEGORY = { id: "outros", name: "Outros", icon: "🎁" };
+
+// Lista plana de itens do catálogo, cada um com o id da sua categoria.
+export function flattenItems(catalog) {
+  return catalog.categories.flatMap((category) =>
+    category.items.map((item) => ({ ...item, categoryId: category.id }))
+  );
+}
+
 // Chave de agregação: itens do catálogo usam o id; itens extras cujo nome
 // coincide com um item do catálogo somam nele; o resto agrupa pelo nome.
 function resolveKey(entry, catalogByName) {
@@ -18,11 +28,13 @@ function resolveKey(entry, catalogByName) {
   return match ? match.id : `custom:${normalizeName(entry.name)}`;
 }
 
-// Retorna [{ key, name, quantity, desiredQuantity | null }] ordenado por nome.
+// Retorna [{ key, name, quantity, desiredQuantity | null, unit, categoryId }]
+// ordenado por nome. Itens fora do catálogo ficam na categoria "outros".
 export function aggregateContributions(catalog, contributions) {
-  const catalogById = new Map(catalog.items.map((item) => [item.id, item]));
+  const items = flattenItems(catalog);
+  const catalogById = new Map(items.map((item) => [item.id, item]));
   const catalogByName = new Map(
-    catalog.items.map((item) => [normalizeName(item.name), item])
+    items.map((item) => [normalizeName(item.name), item])
   );
   const totals = new Map();
 
@@ -38,6 +50,8 @@ export function aggregateContributions(catalog, contributions) {
         name: catalogItem ? catalogItem.name : entry.name.trim(),
         quantity: 0,
         desiredQuantity: catalogItem ? catalogItem.desiredQuantity : null,
+        unit: catalogItem?.unit ?? null,
+        categoryId: catalogItem ? catalogItem.categoryId : OTHER_CATEGORY.id,
       };
       current.quantity += quantity;
       totals.set(key, current);
@@ -53,10 +67,23 @@ export function aggregateContributions(catalog, contributions) {
 // na ordem do JSON, com quanto já foi dado e quanto falta.
 export function getAvailableSuggestions(catalog, aggregated) {
   const givenByKey = new Map(aggregated.map((a) => [a.key, a.quantity]));
-  return catalog.items
+  return flattenItems(catalog)
     .map((item) => {
       const given = givenByKey.get(item.id) ?? 0;
       return { ...item, given, remaining: item.desiredQuantity - given };
     })
     .filter((item) => item.remaining > 0);
+}
+
+// Agrupa itens (que tenham categoryId) seguindo a ordem das categorias do
+// catálogo, com "Outros" por último. Categorias sem itens são omitidas.
+// Retorna [{ category, items }].
+export function groupByCategory(catalog, items) {
+  const categories = [...catalog.categories, OTHER_CATEGORY];
+  return categories
+    .map((category) => ({
+      category,
+      items: items.filter((item) => item.categoryId === category.id),
+    }))
+    .filter((group) => group.items.length > 0);
 }
