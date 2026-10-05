@@ -1,0 +1,211 @@
+/* Visual inspirado no Google Forms (tema roxo). */
+:root {
+  --bg: #f0ebf8;
+  --card: #ffffff;
+  --border: #dadce0;
+  --text: #202124;
+  --muted: #70757a;
+  --accent: #673ab7;
+  --accent-soft: #f3eefb;
+  --required: #d93025;
+  --success: #188038;
+  --radius: 8px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+[hidden] { display: none !important; }
+
+.container {
+  max-width: 770px;
+  margin: 0 auto;
+  padding: 12px 16px 48px;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin: 12px 0;
+}
+
+.card--header {
+  border-top: 10px solid var(--accent);
+  padding-top: 22px;
+}
+
+.card--header h1 {
+  margin: 0 0 12px;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.card__description { margin: 0 0 16px; white-space: pre-line; }
+
+.card--error { color: var(--required); }
+
+.required-hint {
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  color: var(--required);
+  font-size: 14px;
+}
+
+.required { color: var(--required); }
+
+/* Perguntas */
+.question {
+  display: block;
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.question__help { margin: -8px 0 16px; color: var(--muted); }
+
+.muted { color: var(--muted); margin: 0; }
+
+/* Inputs com sublinhado, como no Forms */
+.text-input {
+  width: 50%;
+  min-width: 200px;
+  padding: 6px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.text-input:focus {
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 5px;
+}
+
+.text-input.is-invalid { border-bottom-color: var(--required); }
+
+.text-input--qty { width: 72px; min-width: 0; text-align: center; }
+
+.field-error { margin: 8px 0 0; color: var(--required); font-size: 12px; }
+.field-error--form { margin: 12px 0; font-size: 14px; }
+
+/* Lista de sugestões */
+.option-list, .custom-list, .given-list { list-style: none; margin: 0; padding: 0; }
+
+.option { padding: 8px 0; }
+
+.option__label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.option__check {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.option__name { flex: 1; }
+
+.option__remaining { color: var(--muted); font-size: 12px; white-space: nowrap; }
+
+.option__qty {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 0 32px;
+  color: var(--muted);
+}
+
+/* Itens extras */
+.custom-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.custom-row__name { flex: 1; width: auto; min-width: 0; }
+
+/* Botões */
+.btn {
+  border: 0;
+  border-radius: 4px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn--primary {
+  padding: 9px 24px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn--primary:hover { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
+.btn--primary:disabled { opacity: 0.6; cursor: default; }
+
+.btn--text {
+  padding: 8px;
+  margin-left: -8px;
+  background: transparent;
+  color: var(--accent);
+}
+
+.btn--text:hover { background: var(--accent-soft); }
+
+.btn--icon {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.btn--icon:hover { background: #f1f3f4; }
+
+.form-actions { margin-top: 12px; }
+
+/* Presentes já escolhidos */
+.given {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.given:last-child { border-bottom: 0; }
+
+.given__qty { color: var(--muted); white-space: nowrap; }
+.given__qty.is-complete { color: var(--success); }
+
+@media (max-width: 600px) {
+  .card { padding: 20px 16px; }
+  .card--header h1 { font-size: 24px; }
+  .text-input { width: 100%; min-width: 0; }
+  .text-input--qty { width: 64px; }
+}

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chá de bebê</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <main class="container">
+    <header class="card card--header">
+      <h1 id="form-title">Chá de bebê</h1>
+      <p id="form-description" class="card__description"></p>
+      <p class="required-hint"><span class="required">*</span> Indica uma pergunta obrigatória</p>
+    </header>
+
+    <p id="load-error" class="card card--error" hidden></p>
+
+    <form id="gift-form" novalidate>
+      <section class="card">
+        <label class="question" for="guest-name">Seu nome <span class="required">*</span></label>
+        <input id="guest-name" name="guestName" class="text-input" type="text"
+               placeholder="Sua resposta" autocomplete="name" maxlength="80">
+        <p class="field-error" data-error-for="guest-name" hidden></p>
+      </section>
+
+      <section class="card">
+        <h2 class="question">O que você pretende dar?</h2>
+        <p class="question__help">Marque os itens e informe a quantidade.</p>
+        <ul id="suggestions" class="option-list"></ul>
+        <p id="suggestions-empty" class="muted" hidden>
+          Todos os itens sugeridos já foram escolhidos. Você ainda pode adicionar outro presente abaixo.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2 class="question">Outro presente</h2>
+        <p class="question__help">Quer dar algo que não está na lista? Adicione aqui.</p>
+        <ul id="custom-items" class="custom-list"></ul>
+        <button id="add-custom" type="button" class="btn btn--text">+ Adicionar outro item</button>
+      </section>
+
+      <p class="field-error field-error--form" data-error-for="form" hidden></p>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn--primary">Enviar</button>
+      </div>
+    </form>
+
+    <section id="success" class="card" hidden>
+      <h2 class="question">Obrigado! 💜</h2>
+      <p>Sua escolha foi registrada. Confira abaixo a lista atualizada.</p>
+      <button id="new-response" type="button" class="btn btn--text">Enviar outra resposta</button>
+    </section>
+
+    <section class="card">
+      <h2 class="question">Presentes já escolhidos</h2>
+      <p class="question__help">Total somado de todos os convidados.</p>
+      <ul id="given-list" class="given-list"></ul>
+      <p id="given-empty" class="muted" hidden>Nenhum presente escolhido ainda. Seja o primeiro!</p>
+    </section>
+  </main>
+
+  <template id="suggestion-template">
+    <li class="option">
+      <label class="option__label">
+        <input type="checkbox" class="option__check">
+        <span class="option__name"></span>
+        <span class="option__remaining"></span>
+      </label>
+      <label class="option__qty" hidden>
+        Quantidade
+        <input type="number" class="text-input text-input--qty" min="1" step="1" value="1">
+      </label>
+    </li>
+  </template>
+
+  <template id="custom-template">
+    <li class="custom-row">
+      <input type="text" class="text-input custom-row__name" placeholder="Nome do item" maxlength="80" aria-label="Nome do item">
+      <input type="number" class="text-input text-input--qty custom-row__qty" min="1" step="1" value="1" aria-label="Quantidade">
+      <button type="button" class="btn btn--icon custom-row__remove" aria-label="Remover item">×</button>
+    </li>
+  </template>
+
+  <template id="given-template">
+    <li class="given">
+      <span class="given__name"></span>
+      <span class="given__qty"></span>
+    </li>
+  </template>
+</body>
+</html>
