@@ -46,9 +46,10 @@ function renderHeader() {
   els.description.textContent = catalog.description ?? "";
 }
 
-// "8 de 10 pacotes" / "8 de 10"
-function formatOutOf(quantity, desired, unit) {
-  return `${quantity} de ${desired}${unit ? ` ${unit}` : ""}`;
+// "3 pacotes" / "1 pacote" / "3". As unidades do catálogo estão no plural.
+function formatQuantity(quantity, unit) {
+  if (!unit) return String(quantity);
+  return `${quantity} ${quantity === 1 ? unit.replace(/s$/, "") : unit}`;
 }
 
 // Título da categoria + seus itens, renderizados por renderItem.
@@ -69,8 +70,10 @@ function renderSuggestionItem(item) {
   const li = cloneTemplate(els.templates.suggestion);
   li.dataset.itemId = item.id;
   li.querySelector(".option__name").textContent = item.name;
-  li.querySelector(".option__remaining").textContent =
-    `faltam ${formatOutOf(item.remaining, item.desiredQuantity, item.unit)}`;
+  if (item.given > 0) {
+    li.querySelector(".option__given").textContent =
+      `já escolhidos: ${formatQuantity(item.given, item.unit)}`;
+  }
 
   const check = li.querySelector(".option__check");
   const qtyLabel = li.querySelector(".option__qty");
@@ -84,13 +87,8 @@ function renderSuggestionItem(item) {
 function renderGivenItem(entry) {
   const li = cloneTemplate(els.templates.given);
   li.querySelector(".given__name").textContent = entry.name;
-  const qty = li.querySelector(".given__qty");
-  if (entry.desiredQuantity === null) {
-    qty.textContent = `Qtd: ${entry.quantity}`;
-  } else {
-    qty.textContent = `Qtd: ${formatOutOf(entry.quantity, entry.desiredQuantity, entry.unit)}`;
-    qty.classList.toggle("is-complete", entry.quantity >= entry.desiredQuantity);
-  }
+  li.querySelector(".given__qty").textContent =
+    `Qtd: ${formatQuantity(entry.quantity, entry.unit)}`;
   return li;
 }
 

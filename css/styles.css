@@ -156,7 +156,7 @@ body {
 
 .option__name { flex: 1; }
 
-.option__remaining { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.option__given { color: var(--muted); font-size: 12px; white-space: nowrap; }
 
 .option__qty {
   display: flex;
@@ -230,7 +230,6 @@ body {
 .given:last-child { border-bottom: 0; }
 
 .given__qty { color: var(--muted); white-space: nowrap; }
-.given__qty.is-complete { color: var(--success); }
 
 @media (max-width: 600px) {
   .card { padding: 20px 16px; }
