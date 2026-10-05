@@ -12,7 +12,23 @@
 // itemId é null para itens adicionados pelo convidado (fora do catálogo).
 
 const CATALOG_URL = "data/gifts.json";
-const STORAGE_KEY = "cha-bebe:contributions";
+// Web App do Google Apps Script (código em apps-script/Code.gs).
+// Ao publicar uma nova versão pelo "Gerenciar implantações", a URL não muda.
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbwGZ2J9o-6cO91qdKqeKSFN9MxDtaK-0Y9mpxVIVOpDnIWvnyC8FNpFlbJefblYLgMn/exec";
+
+// A API sempre responde HTTP 200 com { ok, data } ou { ok: false, error }.
+async function request(options) {
+  const response = await fetch(API_URL, options);
+  if (!response.ok) {
+    throw new Error(`Falha na API (${response.status})`);
+  }
+  const body = await response.json();
+  if (!body.ok) {
+    throw new Error(body.error || "Erro desconhecido na API");
+  }
+  return body.data;
+}
 
 export async function getCatalog() {
   const response = await fetch(CATALOG_URL, { cache: "no-store" });
@@ -23,23 +39,16 @@ export async function getCatalog() {
 }
 
 export async function getContributions() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  const contributions = await request({ cache: "no-store" });
+  return Array.isArray(contributions) ? contributions : [];
 }
 
+// text/plain evita o preflight de CORS, que o Apps Script não responde.
+// O id e a data são gerados pelo servidor.
 export async function addContribution(contribution) {
-  const contributions = await getContributions();
-  const saved = {
-    ...contribution,
-    id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
-  };
-  contributions.push(saved);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(contributions));
-  return saved;
+  return request({
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(contribution),
+  });
 }
