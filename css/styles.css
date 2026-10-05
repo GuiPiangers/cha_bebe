@@ -1,12 +1,12 @@
 /* Visual inspirado no Google Forms (tema roxo). */
 :root {
-  --bg: #f0ebf8;
+  --bg: #fffefc;
   --card: #ffffff;
   --border: #dadce0;
   --text: #202124;
   --muted: #70757a;
-  --accent: #673ab7;
-  --accent-soft: #f3eefb;
+  --accent: #d29987;
+  --accent-soft: #f9ead9;
   --required: #d93025;
   --success: #188038;
   --radius: 8px;
