@@ -215,17 +215,26 @@ async function handleSubmit(event) {
   els.submit.disabled = true;
   try {
     await addContribution(contribution);
-    els.form.reset();
-    els.customItems.replaceChildren();
-    els.form.hidden = true;
-    els.success.hidden = false;
-    await refresh();
-    els.success.scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (error) {
     console.error(error);
     showError("form", "Não foi possível enviar. Tente novamente.");
+    return;
   } finally {
     els.submit.disabled = false;
+  }
+
+  els.form.reset();
+  els.customItems.replaceChildren();
+  els.form.hidden = true;
+  els.success.hidden = false;
+  els.success.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  // O envio já foi salvo: se a atualização da lista falhar, não exibimos erro
+  // de envio, senão o convidado reenviaria e duplicaria a reserva.
+  try {
+    await refresh();
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -238,20 +247,29 @@ function startNewResponse() {
 
 // ---------- Inicialização ----------
 
+function showLoadError(error) {
+  console.error(error);
+  els.form.hidden = true;
+  els.loadError.textContent =
+    "Não foi possível carregar a lista de presentes. Recarregue a página.";
+  els.loadError.hidden = false;
+}
+
 async function init() {
   try {
     catalog = await getCatalog();
   } catch (error) {
-    console.error(error);
-    els.form.hidden = true;
-    els.loadError.textContent =
-      "Não foi possível carregar a lista de presentes. Recarregue a página.";
-    els.loadError.hidden = false;
+    showLoadError(error);
     return;
   }
 
   renderHeader();
-  await refresh();
+  try {
+    await refresh();
+  } catch (error) {
+    showLoadError(error);
+    return;
+  }
 
   els.addCustom.addEventListener("click", addCustomRow);
   els.form.addEventListener("submit", handleSubmit);
