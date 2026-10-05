@@ -42,7 +42,18 @@ body {
 
 .card--header {
   border-top: 10px solid var(--accent);
-  padding-top: 22px;
+  padding-top: 0;
+  overflow: hidden; /* arredonda os cantos do banner junto com o card */
+}
+
+/* Banner encostado na borda superior e nas laterais do card,
+   anulando o padding horizontal (24px; 16px no celular). */
+.banner {
+  display: block;
+  width: calc(100% + 48px);
+  height: 260px;
+  object-fit: cover;
+  margin: 0 -24px 22px;
 }
 
 .card--header h1 {
@@ -255,6 +266,8 @@ body {
 
 @media (max-width: 600px) {
   .card { padding: 20px 16px; }
+  .card--header { padding-top: 0; }
+  .banner { width: calc(100% + 32px); margin: 0 -16px 20px; }
   .card--header h1 { font-size: 24px; }
   .text-input { width: 100%; min-width: 0; }
   .text-input--qty { width: 64px; }
