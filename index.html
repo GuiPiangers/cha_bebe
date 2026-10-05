@@ -31,7 +31,7 @@
       <section class="card">
         <h2 class="question">O que você pretende dar?</h2>
         <p class="question__help">Marque os itens e informe a quantidade.</p>
-        <ul id="suggestions" class="option-list"></ul>
+        <ul id="suggestions" class="category-list"></ul>
         <p id="suggestions-empty" class="muted" hidden>
           Todos os itens sugeridos já foram escolhidos. Você ainda pode adicionar outro presente abaixo.
         </p>
@@ -60,10 +60,21 @@
     <section class="card">
       <h2 class="question">Presentes já escolhidos</h2>
       <p class="question__help">Total somado de todos os convidados.</p>
-      <ul id="given-list" class="given-list"></ul>
+      <ul id="given-list" class="category-list"></ul>
       <p id="given-empty" class="muted" hidden>Nenhum presente escolhido ainda. Seja o primeiro!</p>
     </section>
   </main>
+
+  <template id="category-template">
+    <li class="category">
+      <h3 class="category__title">
+        <span class="category__icon" aria-hidden="true"></span>
+        <span class="category__name"></span>
+      </h3>
+      <p class="category__note" hidden></p>
+      <ul class="category__items"></ul>
+    </li>
+  </template>
 
   <template id="suggestion-template">
     <li class="option">

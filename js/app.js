@@ -1,7 +1,11 @@
 // Camada de interface: renderiza, valida e envia. Não conhece o storage
 // por dentro nem as regras de agregação — usa storage.js e gifts.js.
 import { getCatalog, getContributions, addContribution } from "./storage.js";
-import { aggregateContributions, getAvailableSuggestions } from "./gifts.js";
+import {
+  aggregateContributions,
+  getAvailableSuggestions,
+  groupByCategory,
+} from "./gifts.js";
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -21,6 +25,7 @@ const els = {
   givenList: $("#given-list"),
   givenEmpty: $("#given-empty"),
   templates: {
+    category: $("#category-template"),
     suggestion: $("#suggestion-template"),
     custom: $("#custom-template"),
     given: $("#given-template"),
@@ -41,41 +46,68 @@ function renderHeader() {
   els.description.textContent = catalog.description ?? "";
 }
 
+// "8 de 10 pacotes" / "8 de 10"
+function formatOutOf(quantity, desired, unit) {
+  return `${quantity} de ${desired}${unit ? ` ${unit}` : ""}`;
+}
+
+// Título da categoria + seus itens, renderizados por renderItem.
+function renderCategory({ category, items }, renderItem, { showNote = false } = {}) {
+  const li = cloneTemplate(els.templates.category);
+  li.querySelector(".category__icon").textContent = category.icon ?? "";
+  li.querySelector(".category__name").textContent = category.name;
+  if (showNote && category.note) {
+    const note = li.querySelector(".category__note");
+    note.textContent = category.note;
+    note.hidden = false;
+  }
+  li.querySelector(".category__items").replaceChildren(...items.map(renderItem));
+  return li;
+}
+
+function renderSuggestionItem(item) {
+  const li = cloneTemplate(els.templates.suggestion);
+  li.dataset.itemId = item.id;
+  li.querySelector(".option__name").textContent = item.name;
+  li.querySelector(".option__remaining").textContent =
+    `faltam ${formatOutOf(item.remaining, item.desiredQuantity, item.unit)}`;
+
+  const check = li.querySelector(".option__check");
+  const qtyLabel = li.querySelector(".option__qty");
+  check.addEventListener("change", () => {
+    qtyLabel.hidden = !check.checked;
+    if (check.checked) qtyLabel.querySelector("input").focus();
+  });
+  return li;
+}
+
+function renderGivenItem(entry) {
+  const li = cloneTemplate(els.templates.given);
+  li.querySelector(".given__name").textContent = entry.name;
+  const qty = li.querySelector(".given__qty");
+  if (entry.desiredQuantity === null) {
+    qty.textContent = `Qtd: ${entry.quantity}`;
+  } else {
+    qty.textContent = `Qtd: ${formatOutOf(entry.quantity, entry.desiredQuantity, entry.unit)}`;
+    qty.classList.toggle("is-complete", entry.quantity >= entry.desiredQuantity);
+  }
+  return li;
+}
+
 function renderSuggestions(suggestions) {
   els.suggestions.replaceChildren(
-    ...suggestions.map((item) => {
-      const li = cloneTemplate(els.templates.suggestion);
-      li.dataset.itemId = item.id;
-      li.querySelector(".option__name").textContent = item.name;
-      li.querySelector(".option__remaining").textContent =
-        `faltam ${item.remaining} de ${item.desiredQuantity}`;
-
-      const check = li.querySelector(".option__check");
-      const qtyLabel = li.querySelector(".option__qty");
-      check.addEventListener("change", () => {
-        qtyLabel.hidden = !check.checked;
-        if (check.checked) qtyLabel.querySelector("input").focus();
-      });
-      return li;
-    })
+    ...groupByCategory(catalog, suggestions).map((group) =>
+      renderCategory(group, renderSuggestionItem, { showNote: true })
+    )
   );
   els.suggestionsEmpty.hidden = suggestions.length > 0;
 }
 
 function renderGivenList(aggregated) {
   els.givenList.replaceChildren(
-    ...aggregated.map((entry) => {
-      const li = cloneTemplate(els.templates.given);
-      li.querySelector(".given__name").textContent = entry.name;
-      const qty = li.querySelector(".given__qty");
-      if (entry.desiredQuantity === null) {
-        qty.textContent = `Qtd: ${entry.quantity}`;
-      } else {
-        qty.textContent = `Qtd: ${entry.quantity} de ${entry.desiredQuantity}`;
-        qty.classList.toggle("is-complete", entry.quantity >= entry.desiredQuantity);
-      }
-      return li;
-    })
+    ...groupByCategory(catalog, aggregated).map((group) =>
+      renderCategory(group, renderGivenItem)
+    )
   );
   els.givenEmpty.hidden = aggregated.length > 0;
 }
@@ -116,6 +148,7 @@ function clearErrors() {
 function collectForm() {
   clearErrors();
   let valid = true;
+  let invalidQuantity = false;
   const items = [];
 
   const guestName = els.guestName.value.trim();
@@ -132,6 +165,7 @@ function collectForm() {
     if (quantity === null) {
       qtyInput.classList.add("is-invalid");
       valid = false;
+      invalidQuantity = true;
       continue;
     }
     items.push({
@@ -149,13 +183,19 @@ function collectForm() {
     if (quantity === null) {
       qtyInput.classList.add("is-invalid");
       valid = false;
+      invalidQuantity = true;
       continue;
     }
     items.push({ itemId: null, name, quantity });
   }
 
   if (!valid) {
-    showError("form", "Revise os campos destacados. A quantidade deve ser um número inteiro maior que zero.");
+    showError(
+      "form",
+      invalidQuantity
+        ? "Revise os campos destacados. A quantidade deve ser um número inteiro maior que zero."
+        : "Revise os campos destacados."
+    );
     return null;
   }
   if (items.length === 0) {
