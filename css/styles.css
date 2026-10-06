@@ -264,6 +264,12 @@ body {
 
 .given__qty { color: var(--muted); white-space: nowrap; }
 
+/* Mesmo breakpoint do <source> do banner no index.html. A versão mobile tem
+   texto perto das bordas, então é exibida inteira em vez de recortada. */
+@media (max-width: 767px) {
+  .banner { height: auto; }
+}
+
 @media (max-width: 600px) {
   .card { padding: 20px 16px; }
   .card--header { padding-top: 0; }
